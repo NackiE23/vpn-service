@@ -1,0 +1,32 @@
+{% include 'vpn_service/base.html' %}
+
+{% block main %}
+    <div class="d-flex align-items-center py-4" data-bs-theme="dark">
+        <main class="form-signin w-100 m-auto" style="max-width: 330px;">
+            <form method="POST">
+                {% csrf_token %}
+                <h1 class="h3 mb-3 fw-normal">Registration</h1>
+                {% for field in register_form %}
+                    {{ field.errors }}
+                    <div class="form-floating my-2">
+                        {{ field }}
+                        {{ field.label_tag }}
+                    </div>
+                {% endfor %}
+
+                <button class="btn btn-primary w-100 py-2 mt-3" type="submit">Register</button>
+            </form>
+        </main>
+    </div>
+{#    <main class="text-center">#}
+{#        <form method="POST">#}
+{#            {% csrf_token %}#}
+{##}
+{#            {{ register_form.as_p }}#}
+{##}
+{#            <p>#}
+{#                <input type="submit" value="Register">#}
+{#            </p>#}
+{#        </form>#}
+{#    </main>#}
+{% endblock %}
