@@ -4,8 +4,40 @@
     <main class="text-center">
         <h1>Personal Cabinet</h1>
 
-        <div class="personal_info">
+        <div class="container bg-dark my-5 py-3 rounded">
+            <h2 class="text-center mb-3">Profile info</h2>
+            Some form
+        </div>
 
+        <div class="container bg-dark my-5 py-3 rounded">
+            <h2 class="text-center mb-3">Statistics</h2>
+            <div class="">
+                Number of transitions between pages:
+                <span>{{ statistics.page_transitions }}</span>
+            </div>
+            <div class="">
+                Amount of data:
+                <strong>sent</strong> <span>{{ statistics.data_sent }} MB</span>
+                <strong>downloaded</strong> <span>{{ statistics.data_downloaded }} MB</span>
+            </div>
+        </div>
+
+        <div class="container bg-dark my-5 py-3 rounded">
+            <h2 class="text-center mb-3">Sites</h2>
+
+            <ul class="list-group" data-bs-theme="dark">
+                {% for site in sites %}
+                    <a href="/{{ site.pk }}/{{ site.slug }}" class="text-decoration-none">
+                        <li class="list-group-item list-group-item-action">
+                            {{ site.name }}
+                            <br>
+                            {{ site.url }}
+                        </li>
+                    </a>
+                {% endfor %}
+            </ul>
+
+            <a href="{% url 'create_site' %}" class="btn btn-secondary mt-3" role="button">Create a new site</a>
         </div>
     </main>
 {% endblock %}

@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
 
+from .models import Site
+
 User = get_user_model()
 
 
@@ -9,6 +11,18 @@ class RegisterUser(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'username', 'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'password', 'class': 'form-control'}))
     password_confirm = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'password', 'class': 'form-control'}))
+
+
+class CreateSite(forms.ModelForm):
+    class Meta:
+        model = Site
+        fields = ["name", "url"]
+
+    def __init__(self, *args, **kwargs):
+        super(CreateSite, self).__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs['placeholder'] = 'name'
+        self.fields['name'].widget.attrs['class'] = 'form-control'
+        self.fields['url'].widget = forms.URLInput(attrs={'placeholder': 'url', 'class': 'form-control'})
 
 
 class LoginUser(AuthenticationForm):

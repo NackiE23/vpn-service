@@ -4,21 +4,41 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import render, redirect
 
-from .forms import RegisterUser, LoginUser
-from .models import User
+from .forms import RegisterUser, LoginUser, CreateSite
+from .models import User, Site
 
 
 def main(request):
     context = {
-        'title': 'Users main'
+        'title': 'Main Page'
     }
     return render(request, "vpn_service/main.html", context)
 
 
 @login_required(login_url='login')
+def create_site(request):
+    context = {
+        'title': 'Create site',
+        'create_site_form': CreateSite
+    }
+
+    if request.method == "POST":
+        site = CreateSite(request.POST)
+
+        if site.is_valid():
+            site_instance = site.save(commit=False)
+            site_instance.user = request.user
+            site_instance.save()
+
+    return render(request, 'vpn_service/create_site.html', context)
+
+
+@login_required(login_url='login')
 def personal_cabinet(request):
     context = {
-        'title': 'Personal Cabinet'
+        'title': 'Personal Cabinet',
+        'sites': Site.objects.filter(user=request.user),
+        'statistics': request.user.statistics
     }
 
     return render(request, "vpn_service/personal_cabinet.html", context)

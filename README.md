@@ -1,17 +1,15 @@
 # VPN Service
 
-some description here
-
-# create virtual environment
-
-```bash
-python -m venv venv
-```
+Simple VPN Service 
 
 # start project
 
 ```bash
-git clone
-cd vpn_service
+git clone https://github.com/NackiE23/vpn-service.git
+cd vpn-service
+python -m venv venv
+pip install -r requirements.txt
+cd core
+python manage.py runserver
 ```
 
