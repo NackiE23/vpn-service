@@ -5,7 +5,7 @@ from .models import User, UserProfile, Site, Statistics
 
 
 @receiver(post_save, sender=User)
-def create_statistics(sender, instance, created, **kwargs):
+def create_userprofile(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
 
