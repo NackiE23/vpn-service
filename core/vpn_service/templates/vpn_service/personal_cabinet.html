@@ -6,20 +6,19 @@
 
         <div class="container bg-dark my-5 py-3 rounded">
             <h2 class="text-center mb-3">Profile info</h2>
-            Some form
-        </div>
+            <form class="w-75 mx-auto d-flex flex-column justify-content-center" method="POST" action="/change_profile/" enctype="multipart/form-data">
+                {% csrf_token %}
+                <img id="avatar-preview" src="{% if user.userprofile.avatar %}{{ user.userprofile.avatar.url }}{% else %}#{% endif %}" alt="Image preview" style="max-height: 350px; max-width: 100%; margin: 0 auto">
+                {% for field in user_profile_form %}
+                    {{ field.errors }}
+                    <div class="form-floating my-2">
+                        {{ field }}
+                        {{ field.label_tag }}
+                    </div>
+                {% endfor %}
 
-        <div class="container bg-dark my-5 py-3 rounded">
-            <h2 class="text-center mb-3">Statistics</h2>
-            <div class="">
-                Number of transitions between pages:
-                <span>{{ statistics.page_transitions }}</span>
-            </div>
-            <div class="">
-                Amount of data:
-                <strong>sent</strong> <span>{{ statistics.data_sent }} MB</span>
-                <strong>downloaded</strong> <span>{{ statistics.data_downloaded }} MB</span>
-            </div>
+                <button class="btn btn-secondary w-100 py-2 mt-3" type="submit">Change Info</button>
+            </form>
         </div>
 
         <div class="container bg-dark my-5 py-3 rounded">
@@ -27,11 +26,15 @@
 
             <ul class="list-group" data-bs-theme="dark">
                 {% for site in sites %}
-                    <a href="/{{ site.pk }}/{{ site.slug }}" class="text-decoration-none">
-                        <li class="list-group-item list-group-item-action">
-                            {{ site.name }}
-                            <br>
-                            {{ site.url }}
+                    <a href="{% url 'site_origin' site_pk=site.pk site_slug=site.slug %}" class="text-decoration-none">
+                        <li class="list-group-item list-group-item-action px-5">
+                            <strong>{{ site.name }}</strong> ({{ site.url }})
+
+                            <div class="">
+                                Transitions: {{ site.statistics.page_transitions }}; <br>
+                                Data sent: {{ site.statistics.data_sent }} KB; <br>
+                                Date downloaded: {{ site.statistics.data_downloaded }} KB
+                            </div>
                         </li>
                     </a>
                 {% endfor %}
@@ -40,4 +43,14 @@
             <a href="{% url 'create_site' %}" class="btn btn-secondary mt-3" role="button">Create a new site</a>
         </div>
     </main>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $('form').on('change', '#id_avatar', function() {
+            console.log("function work");
+            let src = URL.createObjectURL(this.files[0]);
+            $('#avatar-preview').attr('src', src);
+        });
+    </script>
 {% endblock %}
