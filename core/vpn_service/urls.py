@@ -1,9 +1,6 @@
-from django.urls import path, re_path
-from django.views.generic import RedirectView
+from django.urls import path
 
 from . import views
-
-favicon_view = RedirectView.as_view(url='/static/favicon.ico', permanent=True)
 
 urlpatterns = [
     path('', views.main, name="main"),
@@ -15,6 +12,4 @@ urlpatterns = [
     path('register/', views.register_user, name="registration"),
     path('login/', views.login_user, name="login"),
     path('logout/', views.logout_view, name="logout"),
-
-    re_path(r'^favicon\.ico$', favicon_view)
 ]
