@@ -12,7 +12,7 @@ class CheckUrlMiddleware:
         # the view (and later middleware) are called.
 
         referer = request.META.get('HTTP_REFERER', None)
-        if referer:
+        if referer and not request.path.startswith(("/media/", "/static/")):
             path = request.path
             try:
                 resolve(path)
